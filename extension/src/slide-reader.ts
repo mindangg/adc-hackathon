@@ -11,6 +11,8 @@ const AUTO_INTERVAL_MS = 5000;
 const CHANGE_THRESHOLD = 6;
 // Khung video lớn nhất phải chiếm ít nhất ngần này diện tích tab mới coi là màn hình chia sẻ.
 const MIN_SHARE_AREA = 0.2;
+// Cạnh dài tối đa của ảnh gửi đi: đủ đọc chữ slide, ít token hình → model mở trên Colab chạy nhanh hơn.
+const MAX_IMAGE_SIDE = 1280;
 
 type Slide = { summary: string; detail: string };
 
@@ -176,7 +178,8 @@ async function capture(tabId: number, windowId: number, imgSrc?: string) {
     ? [rect.x * k, rect.y * k, rect.w * k, rect.h * k]
     : [0, 0, bmp.width, bmp.height];
 
-  const crop = new OffscreenCanvas(Math.round(sw), Math.round(sh));
+  const scale = Math.min(1, MAX_IMAGE_SIDE / Math.max(sw, sh));
+  const crop = new OffscreenCanvas(Math.round(sw * scale), Math.round(sh * scale));
   crop.getContext("2d")!.drawImage(bmp, sx, sy, sw, sh, 0, 0, crop.width, crop.height);
   const small = new OffscreenCanvas(32, 18);
   const ctx = small.getContext("2d")!;

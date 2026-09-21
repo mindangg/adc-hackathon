@@ -1,6 +1,6 @@
 # ADC Hackathon 2026 – Capy đọc slide cuộc họp
 
-Sản phẩm chính: Chrome extension (`extension/`, WXT) giúp người khiếm thị theo kịp slide được chia sẻ trong cuộc họp trực tuyến (Stage 5). Chụp vùng chia sẻ màn hình → `app/api/slide` (Next.js + OpenAI) mô tả 2 lớp (tóm tắt / chi tiết) hoặc trả lời câu hỏi → đọc qua screen reader của người dùng.
+Sản phẩm chính: Chrome extension (`extension/`, WXT) giúp người khiếm thị theo kịp slide được chia sẻ trong cuộc họp trực tuyến (Stage 5). Chụp vùng chia sẻ màn hình → `app/api/slide` (Next.js, gọi model chuẩn OpenAI; khuyên dùng model mở Qwen3-VL qua `colab/capy_model_server.ipynb` để ảnh không tới model đóng) mô tả 2 lớp (tóm tắt / chi tiết) hoặc trả lời câu hỏi → đọc qua screen reader của người dùng.
 - `extension/capysub/`: tính năng dịch phụ đề YouTube cũ của Capy, đang ẩn (không build).
 - Phần Career Navigator cũ (`app/page.tsx`, `app/api/chat|analyze|cv`) không còn là trọng tâm.
 
