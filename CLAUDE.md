@@ -15,6 +15,7 @@ Web app hỗ trợ người khiếm thị: trò chuyện → hồ sơ nghề ngh
 - Chỉ gợi ý công cụ có trong `data/tools.json`; không gợi ý nghề dựa trên khuyết tật.
 
 ## Nghiên cứu
+- `docs/pitch-and-ideas.md` – câu chuyện pitch, stage phù hợp, hướng sản phẩm (đọc trước tiên).
 - `research/reports/` – báo cáo tổng hợp 6 stage (có nguồn).
 - `research/research_notes/` – ghi chú gốc theo từng stage.
 - `media/` – ảnh chụp đề bài (competition brief).
