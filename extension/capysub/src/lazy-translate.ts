@@ -8,7 +8,7 @@ import {
   type Segment,
   type TranslatedSegment,
   type VideoContext,
-} from "@/shared";
+} from "@/capysub/shared";
 import { translateSegments } from "./api";
 
 type ChunkState = "idle" | "loading" | "done" | "blocked" | "error";

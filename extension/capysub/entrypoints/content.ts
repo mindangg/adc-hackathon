@@ -1,6 +1,6 @@
 import { defineContentScript } from "wxt/utils/define-content-script";
 import { browser } from "wxt/browser";
-import type { Lang } from "@/shared";
+import type { Lang } from "@/capysub/shared";
 import { getCaptions } from "../src/youtube/caption-source";
 import {
   getPlayerContainer,

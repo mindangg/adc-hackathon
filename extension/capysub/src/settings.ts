@@ -1,5 +1,5 @@
 import { browser } from "wxt/browser";
-import type { Lang } from "@/shared";
+import type { Lang } from "@/capysub/shared";
 
 const STORAGE_KEY = "capy:settings";
 

@@ -1,6 +1,8 @@
-# ADC Hackathon 2026 – Career Navigator
+# ADC Hackathon 2026 – Capy đọc slide cuộc họp
 
-Web app hỗ trợ người khiếm thị: trò chuyện → hồ sơ nghề nghiệp → 3 hướng đi → CV Word. Next.js + Claude API.
+Sản phẩm chính: Chrome extension (`extension/`, WXT) giúp người khiếm thị theo kịp slide được chia sẻ trong cuộc họp trực tuyến (Stage 5). Chụp vùng chia sẻ màn hình → `app/api/slide` (Next.js + OpenAI) mô tả 2 lớp (tóm tắt / chi tiết) hoặc trả lời câu hỏi → đọc qua screen reader của người dùng.
+- `extension/capysub/`: tính năng dịch phụ đề YouTube cũ của Capy, đang ẩn (không build).
+- Phần Career Navigator cũ (`app/page.tsx`, `app/api/chat|analyze|cv`) không còn là trọng tâm.
 
 ## Bảo mật
 - KHÔNG đọc, in ra, hay commit file chứa secret: `.env`, `.env.*` (trừ `.env.example`), key, token, credential.

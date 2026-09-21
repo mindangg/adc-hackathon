@@ -1,4 +1,4 @@
-import type { Lang, Segment } from "@/shared";
+import type { Lang, Segment } from "@/capysub/shared";
 import {
   CAPY_MSG,
   type GetCaptionsRequest,

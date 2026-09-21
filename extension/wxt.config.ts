@@ -2,16 +2,12 @@ import { defineConfig } from "wxt";
 
 // WXT lo manifest V3, hot-reload, cross-browser.
 //
-// Publish (M8): đặt WXT_WEB_ORIGIN = domain backend thật khi build production, vd
-//   WXT_WEB_ORIGIN=https://capy.app WXT_API_BASE_URL=https://capy.app npm run build:ext
-// Bản production KHÔNG kèm localhost (permission tối thiểu để qua review Store).
+// Backend thật: WXT_WEB_ORIGIN=https://x.app WXT_API_BASE_URL=https://x.app npm run build
+// Không đặt → gọi backend ở localhost (demo).
 const WEB_ORIGIN = process.env.WXT_WEB_ORIGIN?.trim();
-// WXT/Vite đặt NODE_ENV=production khi build. Bản production bỏ localhost.
-const isProd = process.env.NODE_ENV === "production";
 
-const hostPermissions = ["*://*.youtube.com/*"];
-if (!isProd) hostPermissions.push("http://localhost/*");
-if (WEB_ORIGIN) hostPermissions.push(`${WEB_ORIGIN}/*`);
+// Chỉ cần quyền gọi backend; chụp tab dùng activeTab (cấp khi bấm phím tắt/popup).
+const hostPermissions = [WEB_ORIGIN ? `${WEB_ORIGIN}/*` : "http://localhost/*"];
 
 export default defineConfig({
   modules: ["@wxt-dev/module-react"],
@@ -26,15 +22,18 @@ export default defineConfig({
     },
   },
   manifest: {
-    name: "Capy",
-    description: "Đọc slide trong cuộc họp cho người khiếm thị qua screen reader, và dịch phụ đề YouTube Anh–Việt.",
+    name: "Capy – Đọc slide cuộc họp",
+    description: "Đọc slide đang chia sẻ trong cuộc họp trực tuyến cho người khiếm thị, qua screen reader.",
     // Permission tối thiểu. host_permissions chỉ YouTube + backend.
-    permissions: ["activeTab", "storage", "scripting"],
+    permissions: ["activeTab", "scripting", "storage", "contextMenus"],
     // Phím tắt đọc slide. Người dùng đổi được ở chrome://extensions/shortcuts.
     commands: {
+      _execute_action: { suggested_key: { default: "Alt+Shift+Q" }, description: "Hỏi về slide đang chiếu" },
       describe: { suggested_key: { default: "Alt+Shift+S" }, description: "Đọc slide đang chiếu" },
+      detail: { suggested_key: { default: "Alt+Shift+D" }, description: "Đọc chi tiết slide vừa rồi" },
       "toggle-auto": { suggested_key: { default: "Alt+Shift+A" }, description: "Bật/tắt tự động đọc khi đổi slide" },
-      repeat: { suggested_key: { default: "Alt+Shift+R" }, description: "Đọc lại slide vừa rồi" },
+      // Chrome chỉ cho gợi ý tối đa 4 phím; lệnh này người dùng tự gán ở chrome://extensions/shortcuts.
+      "open-history": { description: "Mở lịch sử slide của cuộc họp" },
     },
     host_permissions: hostPermissions,
     icons: {
@@ -44,7 +43,7 @@ export default defineConfig({
       128: "icon-128.png",
     },
     action: {
-      default_title: "Capy",
+      default_title: "Capy – Đọc slide",
       default_popup: "popup.html",
       default_icon: {
         16: "icon-16.png",
@@ -52,13 +51,5 @@ export default defineConfig({
         48: "icon-48.png",
       },
     },
-    // Content script chèn <img> logo vào trang YouTube → phải khai báo
-    // web-accessible, nếu không Chrome chặn request chrome-extension://.
-    web_accessible_resources: [
-      {
-        resources: ["icon-32.png", "icon-48.png", "logo.png"],
-        matches: ["*://*.youtube.com/*"],
-      },
-    ],
   },
 });

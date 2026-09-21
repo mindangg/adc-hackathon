@@ -3,7 +3,7 @@
  * Mọi truy cập DOM YouTube đi qua đây để chỉ sửa một chỗ.
  */
 
-import type { VideoContext } from "@/shared";
+import type { VideoContext } from "@/capysub/shared";
 
 function cleanText(value: string | null | undefined, maxLength: number): string | undefined {
   const text = value?.replace(/\s+/g, " ").trim();

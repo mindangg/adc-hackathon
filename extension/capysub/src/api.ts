@@ -4,7 +4,7 @@ import type {
   TranslateRequest,
   TranslateStreamMessage,
   VideoContext,
-} from "@/shared";
+} from "@/capysub/shared";
 import { API_BASE } from "./config";
 import { getValidAccessToken } from "./auth";
 

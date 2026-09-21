@@ -1,5 +1,5 @@
 import { browser } from "wxt/browser";
-import type { AuthSession } from "@/shared";
+import type { AuthSession } from "@/capysub/shared";
 import { API_BASE } from "./config";
 
 const STORAGE_KEY = "capy:session";

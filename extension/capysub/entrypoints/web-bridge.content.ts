@@ -1,5 +1,5 @@
 import { defineContentScript } from "wxt/utils/define-content-script";
-import { authSessionSchema } from "@/shared";
+import { authSessionSchema } from "@/capysub/shared";
 import { clearSession, setSession } from "../src/auth";
 
 /**

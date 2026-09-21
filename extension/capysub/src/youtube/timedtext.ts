@@ -1,4 +1,4 @@
-import type { Lang, Segment } from "@/shared";
+import type { Lang, Segment } from "@/capysub/shared";
 
 /**
  * Tiện ích timedtext dùng chung cho cả 2 world (isolated + MAIN).

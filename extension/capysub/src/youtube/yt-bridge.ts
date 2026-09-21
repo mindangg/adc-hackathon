@@ -1,4 +1,4 @@
-import type { Lang, Segment } from "@/shared";
+import type { Lang, Segment } from "@/capysub/shared";
 
 /**
  * Giao thức postMessage giữa isolated content script và MAIN-world capture.

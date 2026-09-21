@@ -1,46 +1,41 @@
 import { defineBackground } from "wxt/utils/define-background";
 import { browser } from "wxt/browser";
-import type { Runtime } from "webextension-polyfill";
-import { describeNow, isAuto, repeatLast, toggleAuto } from "../src/slide-reader";
+import { ask, describeImage, describeNow, isAuto, readDetail, toggleAuto } from "../src/slide-reader";
 
-type BgMessage =
-  | { type: "capy:open-popup" }
-  | { type: "slide:describe" | "slide:toggle-auto" | "slide:repeat" | "slide:status"; tabId: number; windowId: number };
+export type SlideMessage =
+  | { type: "describe" | "detail" | "toggle-auto" | "status" | "open-history"; tabId: number; windowId: number }
+  | { type: "ask"; tabId: number; windowId: number; question: string };
 
-type ActionWithOpenPopup = typeof browser.action & {
-  openPopup?: (options?: { windowId?: number }) => Promise<void>;
-};
-
-function slide(type: string, tabId: number, windowId: number) {
-  if (type === "slide:describe") return describeNow(tabId, windowId);
-  if (type === "slide:toggle-auto") return toggleAuto(tabId, windowId);
-  if (type === "slide:repeat") return repeatLast(tabId);
-  if (type === "slide:status") return Promise.resolve(isAuto(tabId));
+function handle(m: SlideMessage) {
+  if (m.type === "describe") return describeNow(m.tabId, m.windowId);
+  if (m.type === "detail") return readDetail(m.tabId);
+  if (m.type === "toggle-auto") return toggleAuto(m.tabId, m.windowId);
+  if (m.type === "status") return Promise.resolve(isAuto(m.tabId));
+  if (m.type === "ask") return ask(m.tabId, m.windowId, m.question);
+  if (m.type === "open-history") return browser.tabs.create({ url: browser.runtime.getURL("/history.html") });
 }
 
 export default defineBackground(() => {
-  // Phím tắt (khai báo trong wxt.config.ts). Gọi phím tắt cũng cấp activeTab để chụp tab.
-  browser.commands.onCommand.addListener(async (command) => {
-    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-    if (tab?.id != null) void slide(`slide:${command}`, tab.id, tab.windowId!);
+  // Menu chuột phải / phím Menu trên ảnh (ảnh, GIF trong chat Meet/Teams/Slack).
+  browser.runtime.onInstalled.addListener(() => {
+    browser.contextMenus.create({ id: "describe-image", title: "Capy: Mô tả ảnh này", contexts: ["image"] });
+  });
+  browser.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === "describe-image" && tab?.id != null && info.srcUrl) {
+      void describeImage(tab.id, tab.windowId, info.srcUrl);
+    }
   });
 
-  browser.runtime.onMessage.addListener((raw: unknown, sender: Runtime.MessageSender) => {
-    const msg = raw as BgMessage;
-    if (msg?.type?.startsWith("slide:")) {
-      const m = msg as Extract<BgMessage, { tabId: number }>;
-      const p = slide(m.type, m.tabId, m.windowId);
-      // describe/repeat chạy nền (popup đóng ngay); chỉ toggle/status cần trả lời.
-      return m.type === "slide:toggle-auto" || m.type === "slide:status" ? p : undefined;
-    }
-    if (msg?.type !== "capy:open-popup") return;
+  // Phím tắt (wxt.config.ts). Gọi phím tắt cũng cấp activeTab để chụp tab.
+  browser.commands.onCommand.addListener(async (command) => {
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+    if (tab?.id != null) void handle({ type: command, tabId: tab.id, windowId: tab.windowId } as SlideMessage);
+  });
 
-    const action = browser.action as ActionWithOpenPopup;
-    if (!action.openPopup) return;
-
-    const options = sender.tab?.windowId ? { windowId: sender.tab.windowId } : undefined;
-    void action.openPopup(options).catch(() => {
-      // Chrome only allows opening the action popup from supported user gestures.
-    });
+  browser.runtime.onMessage.addListener((raw: unknown) => {
+    const m = raw as SlideMessage;
+    const p = handle(m);
+    // describe/detail đọc trên trang (popup đóng ngay); chỉ các lệnh cần kết quả mới trả lời.
+    return m.type === "toggle-auto" || m.type === "status" || m.type === "ask" ? p : undefined;
   });
 });

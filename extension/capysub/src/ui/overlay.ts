@@ -1,4 +1,4 @@
-import type { TranslatedSegment } from "@/shared";
+import type { TranslatedSegment } from "@/capysub/shared";
 import type { CaptionSettings } from "../settings";
 
 const MAX_AUTO_LINGER_SECONDS = 0.35;
