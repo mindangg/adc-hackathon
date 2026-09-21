@@ -1,0 +1,13 @@
+:root { --bg: #fff; --fg: #111; --accent: #0b57d0; }
+@media (prefers-color-scheme: dark) { :root { --bg: #111; --fg: #f2f2f2; --accent: #8ab4f8; } }
+
+body { margin: 0; background: var(--bg); color: var(--fg); font: 18px/1.6 system-ui, sans-serif; }
+main { max-width: 720px; margin: 0 auto; padding: 16px; }
+button, textarea { font: inherit; }
+button { padding: 10px 16px; min-height: 44px; }
+textarea { width: 100%; box-sizing: border-box; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 16px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

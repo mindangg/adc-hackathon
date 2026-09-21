@@ -1,0 +1,22 @@
+[
+  {
+    "name": "NVDA",
+    "note": "Screen reader miễn phí, mã nguồn mở cho Windows. Dùng được với Word, Excel, Outlook, trình duyệt.",
+    "source": "https://www.nvaccess.org"
+  },
+  {
+    "name": "NVDA tiếng Việt – Trung tâm Sao Mai",
+    "note": "Sao Mai đã Việt hoá NVDA và có lớp đào tạo tin học cho người khiếm thị.",
+    "source": "Báo cáo nghiên cứu: research/reports/Khiếm thị và việc làm 6 stage.md"
+  },
+  {
+    "name": "VoiceOver",
+    "note": "Screen reader có sẵn trên macOS và iPhone, miễn phí.",
+    "source": "https://support.apple.com/guide/voiceover/welcome/mac"
+  },
+  {
+    "name": "TalkBack",
+    "note": "Screen reader có sẵn trên Android, miễn phí.",
+    "source": "https://support.google.com/accessibility/android"
+  }
+]
